@@ -2,9 +2,17 @@
 
 import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
-import { useEffect, useRef, useState, ViewTransition, type KeyboardEvent, type MouseEvent } from "react";
+import {
+  useEffect,
+  useRef,
+  useState,
+  ViewTransition,
+  type FocusEvent,
+  type KeyboardEvent,
+  type MouseEvent,
+} from "react";
 
-const NAVIGATE_DELAY_MS = 450;
+const LIGHTS_MS = 350;
 
 const LIGHT_DELAYS = [
   "",
@@ -41,6 +49,7 @@ export function SectionButton({ href, text, attempt, ordinal, size = "large" }: 
   // The path we were on when clicked; once the route changes this stops matching and the button resets.
   const [pendingFrom, setPendingFrom] = useState<string | null>(null);
   const timer = useRef<number | undefined>(undefined);
+  const litAt = useRef(0);
 
   useEffect(() => () => clearTimeout(timer.current), []);
 
@@ -63,7 +72,17 @@ export function SectionButton({ href, text, attempt, ordinal, size = "large" }: 
 
     setPendingFrom(pathname);
     router.prefetch(href);
-    timer.current = window.setTimeout(() => router.push(href), NAVIGATE_DELAY_MS);
+    const remaining = Math.max(0, LIGHTS_MS - (performance.now() - litAt.current));
+    timer.current = window.setTimeout(() => router.push(href), remaining);
+  }
+
+  function lightUp() {
+    litAt.current = performance.now();
+    router.prefetch(href);
+  }
+
+  function focus(e: FocusEvent<HTMLAnchorElement>) {
+    if (e.currentTarget.matches(":focus-visible")) lightUp();
   }
 
   // Same name on the home page and in the sidebar, so the row morphs between the two spots.
@@ -72,6 +91,8 @@ export function SectionButton({ href, text, attempt, ordinal, size = "large" }: 
     <Link
       href={href}
       onClick={select}
+      onPointerEnter={lightUp}
+      onFocus={focus}
       onKeyDown={moveNavFocus}
       data-nav-button
       aria-current={active ? "page" : undefined}
