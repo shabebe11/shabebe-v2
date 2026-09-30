@@ -46,7 +46,6 @@ type SectionButtonProps = {
 export function SectionButton({ href, text, attempt, ordinal, size = "large" }: SectionButtonProps) {
   const router = useRouter();
   const pathname = usePathname();
-  // The path we were on when clicked; once the route changes this stops matching and the button resets.
   const [pendingFrom, setPendingFrom] = useState<string | null>(null);
   const timer = useRef<number | undefined>(undefined);
   const litAt = useRef(0);
@@ -60,7 +59,6 @@ export function SectionButton({ href, text, attempt, ordinal, size = "large" }: 
 
   function select(e: MouseEvent<HTMLAnchorElement>) {
     if (e.metaKey || e.ctrlKey || e.shiftKey || e.altKey || e.button !== 0) return;
-    // In the sidebar, switch straight away and let the page's loading skeleton cover the wait.
     if (size === "compact") return;
     e.preventDefault();
     if (selected) return;
@@ -85,7 +83,6 @@ export function SectionButton({ href, text, attempt, ordinal, size = "large" }: 
     if (e.currentTarget.matches(":focus-visible")) lightUp();
   }
 
-  // Same name on the home page and in the sidebar, so the row morphs between the two spots.
   return (
     <ViewTransition name={`section${href.replaceAll("/", "-")}`} share="morph" default="none">
     <Link

@@ -1,8 +1,6 @@
 export type Skill = {
   name: string;
-  // SVG in public/icons/skills/, drawn as a single-colour silhouette.
   icon: string;
-  // Brand colour the icon lights up in on hover.
   colour: string;
 };
 

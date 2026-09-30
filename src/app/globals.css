@@ -17,7 +17,6 @@
   --color-deadlift: #EF9F27;
   --color-total: #639922;
   --font-display: var(--font-big-shoulders);
-  /* Pin the optical size to 72, which is Big Shoulders' "Display" cut. */
   --font-display--font-variation-settings: "opsz" 72;
   --font-mono: var(--font-martian-mono);
 }
@@ -26,7 +25,6 @@ html {
   background: var(--background);
 }
 
-/* Overhead light on the platform: a faint warm wash from the top, fading into the floor. */
 body {
   background:
     radial-gradient(ellipse 90% 55% at 50% -15%, rgb(237 235 228 / 0.07), transparent 70%),
@@ -36,7 +34,6 @@ body {
   color: var(--foreground);
 }
 
-/* Section rows morph between the home page and the sidebar (see SectionButton). */
 ::view-transition-group(.morph) {
   animation-duration: 450ms;
   animation-timing-function: cubic-bezier(0.2, 0, 0, 1);
@@ -50,7 +47,6 @@ body {
   }
 }
 
-/* Keep the page clickable while a transition runs. */
 ::view-transition {
   pointer-events: none;
 }
