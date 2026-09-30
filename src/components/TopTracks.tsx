@@ -1,5 +1,5 @@
 import Image from "next/image";
-import { getTopTracks } from "@/lib/spotify";
+import { getTopTracks } from "@/server/spotify";
 
 const ROW = "grid grid-cols-[1.5rem_2.5rem_1fr_auto] items-center gap-3 py-2";
 

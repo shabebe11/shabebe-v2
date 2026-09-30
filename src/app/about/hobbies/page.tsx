@@ -12,9 +12,8 @@ export default function HobbiesPage() {
     <>
       <h1 className="font-display text-6xl font-medium text-chalk">Hobbies</h1>
 
-      {/* Side by side on wide screens so the whole page fits without scrolling. */}
       <div className="mt-10 grid gap-3 lg:grid-cols-[1fr_20rem]">
-        <ul className="grid gap-3 sm:grid-cols-2">
+        <ul className="grid gap-3">
           {HOBBIES.map((hobby, i) => (
             <li
               key={hobby.name}
@@ -44,7 +43,7 @@ export default function HobbiesPage() {
           <div>
             <span className="text-xs text-faint">{String(HOBBIES.length + 1).padStart(2, "0")}</span>
             <h2 className="mt-3 font-display text-4xl font-medium text-chalk">Music</h2>
-            <p className="mt-2 text-xs text-faint">Most player over the last 4 weeks</p>
+            <p className="mt-2 text-xs text-faint">Most played over the last 4 weeks</p>
           </div>
 
           <Suspense fallback={<TopTracksSkeleton />}>

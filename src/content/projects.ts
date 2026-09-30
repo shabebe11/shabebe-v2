@@ -4,10 +4,8 @@ export type Project = {
   year: number;
   summary: string;
   stack: string[];
-  links: { label: string; href: string }[];
-  // src is the path inside public/ with a leading slash, e.g. "/passport.png"; leave [] for no images.
-  images: { src: string; alt: string }[];
-  body: string[];
+  href: string | null;
+  image: string | null;
 };
 
 export const PROJECTS: Project[] = [
@@ -17,9 +15,8 @@ export const PROJECTS: Project[] = [
     year: 2026,
     summary: "Badge, packs, and cards app for WDCC events",
     stack: ["Next.js", "TypeScript", "Tailwind", "Drizzle", "Neon"],
-    links: [{ label: "WDCC Passport", href: "https://passport.wdcc.co.nz" }],
-    images: [{ src: "/passport.png", alt: "WDCC Passport" }, { src: "/passport2.png", alt: "passport2" }],
-    body: [],
+    href: "https://passport.wdcc.co.nz",
+    image: "/passport.png",
   },
   {
     slug: "aa-portal",
@@ -27,22 +24,16 @@ export const PROJECTS: Project[] = [
     year: 2026,
     summary: "CRM and client portal for A&A Accounting",
     stack: ["Next.js", "TypeScript", "Tailwind", "Supabase"],
-    links: [{ label: "A&A Accounting Client Portal", href: "https://aaaccountingportal.biz" }],
-    images: [],
-    body: [],
+    href: "https://aaaccountingportal.biz",
+    image: null,
   },
   {
     slug: "rep-ranker",
     title: "Rep Ranker",
     year: 2025,
     summary: "Gym lift ranking app",
-    stack: ["React", "Java Spring Boot", "CSS", "AWS S3", "AWS RDS",],
-    links: [{ label: "Rep Ranker", href: "" }],
-    images: [],
-    body: ["Site has unfortunately been decommissioned"],
+    stack: ["React", "Java Spring Boot", "CSS", "AWS S3", "AWS RDS"],
+    href: null,
+    image: null,
   },
 ];
-
-export function getProject(slug: string) {
-  return PROJECTS.find((project) => project.slug === slug);
-}

@@ -25,6 +25,8 @@ export default function FriendsPage() {
   );
 }
 
+const CARD = "group relative flex h-full flex-col border border-line p-5 transition-colors duration-200";
+
 function FriendCard({
   friend,
   lot,
@@ -34,50 +36,62 @@ function FriendCard({
   lot: number;
   plate: (typeof PLATES)[number];
 }) {
-  return (
-    <li className="group relative flex flex-col border border-line p-5 transition-colors duration-200 hover:border-faint">
+  const body = (
+    <>
       <span
         aria-hidden
-        className={`absolute inset-x-0 top-0 h-0.5 opacity-30 transition-opacity duration-200 group-hover:opacity-100 ${plate.bar}`}
+        className={`absolute inset-x-0 top-0 h-0.5 opacity-30 transition-opacity duration-200 group-hover:opacity-100 group-focus-visible:opacity-100 ${plate.bar}`}
       />
 
-      <div className="flex items-start justify-between">
-        <div className="relative flex size-14 items-center justify-center overflow-hidden border border-line">
-          {friend.image ? (
-            <Image
-              src={friend.image}
-              alt=""
-              fill
-              sizes="56px"
-              className="object-cover grayscale transition duration-300 group-hover:grayscale-0"
-            />
-          ) : (
-            <span className="font-display text-2xl font-medium text-faint transition-colors duration-200 group-hover:text-chalk">
-              {initials(friend.name)}
-            </span>
-          )}
-        </div>
-        <span className="text-xs text-faint">lot {String(lot).padStart(2, "0")}</span>
+      <div className="relative flex aspect-[2/1] items-center justify-center overflow-hidden border border-line bg-line/40">
+        {friend.image ? (
+          <Image
+            src={friend.image}
+            alt=""
+            fill
+            sizes="(min-width: 640px) 320px, 100vw"
+            className="object-cover object-left-top transition-transform duration-500 origin-top-left motion-safe:group-hover:scale-[1.03] motion-safe:group-focus-visible:scale-[1.03]"
+          />
+        ) : (
+          <span className="font-display text-6xl font-medium text-faint transition-colors duration-200 group-hover:text-chalk group-focus-visible:text-chalk">
+            {initials(friend.name)}
+          </span>
+        )}
       </div>
 
-      <h2 className="mt-5 font-display text-3xl font-medium text-chalk">{friend.name}</h2>
+      <span className="mt-5 text-xs text-faint">lot {String(lot).padStart(2, "0")}</span>
+      <h2 className="mt-1 font-display text-3xl font-medium text-chalk">{friend.name}</h2>
       <p className="mt-1 text-sm text-muted">{friend.tagline}</p>
-      <p className="mt-4 text-xs text-faint">met @ {friend.met}</p>
+      <div className="mt-auto flex items-baseline justify-between pt-4 text-xs text-faint">
+        {friend.met && 
+        <p>met @ {friend.met}</p>
+        }
+        
+        {friend.href && (
+          <>
+            <span aria-hidden className="ml-auto transition-colors duration-200 group-hover:text-chalk group-focus-visible:text-chalk">
+              ↗
+            </span>
+            <span className="sr-only">(opens in a new tab)</span>
+          </>
+        )}
+      </div>
+    </>
+  );
 
-      {friend.links.length > 0 && (
-        <div className="mt-auto flex flex-wrap gap-x-4 gap-y-1 pt-5 text-xs">
-          {friend.links.map((link) => (
-            <a
-              key={link.href}
-              href={link.href}
-              target="_blank"
-              rel="noreferrer"
-              className="text-muted underline decoration-line underline-offset-4 transition-colors hover:text-chalk hover:decoration-chalk"
-            >
-              {link.label} ↗
-            </a>
-          ))}
-        </div>
+  return (
+    <li>
+      {friend.href ? (
+        <a
+          href={friend.href}
+          target="_blank"
+          rel="noreferrer"
+          className={`${CARD} outline-none hover:border-faint focus-visible:border-faint`}
+        >
+          {body}
+        </a>
+      ) : (
+        <div className={CARD}>{body}</div>
       )}
     </li>
   );

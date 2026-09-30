@@ -1,5 +1,3 @@
-import { PROJECTS } from "@/content/projects";
-
 export type Section = {
   href: string;
   text: string;
@@ -26,10 +24,6 @@ export const SECTIONS: Section[] = [
     text: "Projects",
     attempt: 2,
     ordinal: "2nd",
-    nested: [
-      { href: "/projects", text: "All projects" },
-      ...PROJECTS.map((project) => ({ href: `/projects/${project.slug}`, text: project.title })),
-    ],
   },
   {
     href: "/trainingLog",
