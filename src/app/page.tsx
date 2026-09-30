@@ -1,4 +1,5 @@
 import { SectionButton } from "@/components/buttons/SectionButton";
+import PlatformScene from "@/components/PlatformSceneLazy";
 
 const LIFTS: { name: string; kg: number | null }[] = [
   { name: "squat", kg: null },
@@ -12,6 +13,8 @@ const TOTAL = LIFTS.every((lift) => lift.kg !== null)
 
 export default function Home() {
   return (
+    <>
+    <PlatformScene />
     <main className="mx-auto grid w-full max-w-6xl flex-1 items-center gap-16 px-6 py-16 md:grid-cols-2 md:gap-12 md:px-12">
       <section>
         <h1 className="font-display text-7xl font-medium leading-[0.95] text-chalk sm:text-8xl">
@@ -50,5 +53,6 @@ export default function Home() {
         </ul>
       </nav>
     </main>
+    </>
   );
 }

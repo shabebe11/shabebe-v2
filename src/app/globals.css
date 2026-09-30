@@ -22,15 +22,14 @@
 }
 
 html {
-  background: var(--background);
-}
-
-body {
   background:
     radial-gradient(ellipse 90% 55% at 50% -15%, rgb(237 235 228 / 0.07), transparent 70%),
     radial-gradient(ellipse 120% 80% at 50% 120%, rgb(0 0 0 / 0.35), transparent 70%),
     var(--background);
   background-attachment: fixed;
+}
+
+body {
   color: var(--foreground);
 }
 
