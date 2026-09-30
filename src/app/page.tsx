@@ -1,4 +1,14 @@
-import { SectionButton } from "@/components/SectionButton";
+import { SectionButton } from "@/components/buttons/SectionButton";
+
+const LIFTS: { name: string; kg: number | null }[] = [
+  { name: "squat", kg: null },
+  { name: "bench", kg: null },
+  { name: "deadlift", kg: null },
+];
+
+const TOTAL = LIFTS.every((lift) => lift.kg !== null)
+  ? LIFTS.reduce((sum, lift) => sum + (lift.kg ?? 0), 0)
+  : null;
 
 export default function Home() {
   return (
@@ -10,6 +20,20 @@ export default function Home() {
           Al Khudairi
         </h1>
         <p className="mt-6 text-lg text-muted">Part time coder, Full time lifter</p>
+
+        <dl className="mt-12 grid max-w-lg grid-cols-2 gap-6 border-t border-line pt-6 sm:grid-cols-4">
+          {[...LIFTS, { name: "total", kg: TOTAL }].map((lift) => (
+            <div key={lift.name}>
+              <dt className="flex items-center gap-2 text-sm text-muted">
+                {lift.name}
+              </dt>
+              <dd className="mt-2 font-display text-4xl font-medium text-chalk">
+                {lift.kg ?? "—"}
+                <span className="ml-1 font-mono text-sm text-faint">kg</span>
+              </dd>
+            </div>
+          ))}
+        </dl>
       </section>
 
       <nav aria-label="Sections">
