@@ -16,9 +16,10 @@ type SectionButtonProps = {
   href: string;
   text: string;
   attempt: 1 | 2 | 3;
+  ordinal: string;
 };
 
-export function SectionButton({ href, text, attempt }: SectionButtonProps) {
+export function SectionButton({ href, text, attempt, ordinal }: SectionButtonProps) {
   const router = useRouter();
   const [selected, setSelected] = useState(false);
   const timer = useRef<number | undefined>(undefined);
@@ -55,20 +56,21 @@ export function SectionButton({ href, text, attempt }: SectionButtonProps) {
       onClick={select}
       onKeyDown={moveFocus}
       data-section-button
-      className="group flex w-full items-center justify-between gap-5 py-1 outline-none"
+      className="group grid grid-cols-[4.5rem_1fr_auto] items-center border-b border-line py-7 outline-none sm:grid-cols-[6rem_1fr_auto]"
     >
+      <span className="text-faint">{ordinal}</span>
       <span
-        className={`text-2xl uppercase tracking-wide transition-colors duration-150 group-hover:text-[#EDEBE4] group-focus-visible:text-[#EDEBE4] ${
-          selected ? "text-[#EDEBE4]" : "text-[#888780]"
+        className={`font-display text-4xl font-medium transition-colors duration-150 group-hover:text-chalk group-focus-visible:text-chalk sm:text-5xl ${
+          selected ? "text-chalk" : "text-muted"
         }`}
       >
         {text}
       </span>
-      <span aria-hidden className="flex gap-1.5">
+      <span aria-hidden className="flex gap-3">
         {LIGHT_DELAYS.map((delay, i) => (
           <span
             key={i}
-            className={`size-2 rounded-full border transition-colors duration-150 ${delay} ${lightClasses(
+            className={`size-4 rounded-full border-[1.5px] transition-colors duration-150 ${delay} ${lightClasses(
               i < attempt ? "white" : "red",
               selected,
             )}`}
@@ -79,16 +81,15 @@ export function SectionButton({ href, text, attempt }: SectionButtonProps) {
   );
 }
 
-// Full class strings so Tailwind can see them at build time.
 function lightClasses(colour: "white" | "red", on: boolean) {
   if (colour === "white") {
     return on
-      ? "border-[#EDEBE4] bg-[#EDEBE4]"
-      : "border-[#5F5E5A] group-hover:border-[#EDEBE4] group-hover:bg-[#EDEBE4] group-focus-visible:border-[#EDEBE4] group-focus-visible:bg-[#EDEBE4]";
+      ? "border-chalk bg-chalk"
+      : "border-faint group-hover:border-chalk group-hover:bg-chalk group-focus-visible:border-chalk group-focus-visible:bg-chalk";
   }
   return on
-    ? "border-[#E24B4A] bg-[#E24B4A]"
-    : "border-[#5F5E5A] group-hover:border-[#E24B4A] group-hover:bg-[#E24B4A] group-focus-visible:border-[#E24B4A] group-focus-visible:bg-[#E24B4A]";
+    ? "border-squat bg-squat"
+    : "border-faint group-hover:border-squat group-hover:bg-squat group-focus-visible:border-squat group-focus-visible:bg-squat";
 }
 
 export default SectionButton;

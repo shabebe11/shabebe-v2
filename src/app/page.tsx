@@ -1,18 +1,30 @@
-import Image from "next/image";
 import { SectionButton } from "@/components/SectionButton";
 
 export default function Home() {
   return (
-    <div className="flex min-h-screen flex-col items-center justify-between p-24">
-      <main>
-         <div>
-         <p>Shuaib Al Khudairi</p>
-         </div>
+    <main className="mx-auto grid w-full max-w-6xl flex-1 items-center gap-16 px-6 py-16 md:grid-cols-2 md:gap-12 md:px-12">
+      <section>
+        <h1 className="font-display text-7xl font-medium leading-[0.95] text-chalk sm:text-8xl">
+          Shuaib
+          <br />
+          Al Khudairi
+        </h1>
+        <p className="mt-6 text-lg text-muted">Part time coder, Full time lifter</p>
+      </section>
 
-         <SectionButton href="/about" text="About" attempt={1} />
-         <SectionButton href="/projects" text="Projects" attempt={2} />
-        <SectionButton href="/trainingLog" text="Training Log" attempt={3} />
-      </main>
-    </div>
+      <nav aria-label="Sections">
+        <ul className="mt-4">
+          <li>
+            <SectionButton href="/about" text="About" attempt={1} ordinal="1st" />
+          </li>
+          <li>
+            <SectionButton href="/projects" text="Projects" attempt={2} ordinal="2nd" />
+          </li>
+          <li>
+            <SectionButton href="/trainingLog" text="Training log" attempt={3} ordinal="3rd" />
+          </li>
+        </ul>
+      </nav>
+    </main>
   );
 }
