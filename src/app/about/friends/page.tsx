@@ -63,10 +63,6 @@ function FriendCard({
       <h2 className="mt-1 font-display text-3xl font-medium text-chalk">{friend.name}</h2>
       <p className="mt-1 text-sm text-muted">{friend.tagline}</p>
       <div className="mt-auto flex items-baseline justify-between pt-4 text-xs text-faint">
-        {friend.met && 
-        <p>met @ {friend.met}</p>
-        }
-        
         {friend.href && (
           <>
             <span aria-hidden className="ml-auto transition-colors duration-200 group-hover:text-chalk group-focus-visible:text-chalk">
