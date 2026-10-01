@@ -53,7 +53,11 @@ export default async function WorkoutsPage() {
         <TrainingHeatmap weeks={weeks} months={months} />
       </section>
 
-      <div className="mt-12 space-y-10">
+      <p className="mt-10 text-xs text-faint">
+        exercises read as <span className="text-muted">weight × reps × sets</span>
+      </p>
+
+      <div className="mt-6 space-y-10">
         {sessions.length === 0 && <p className="border-t border-line pt-4 text-sm text-faint">No sessions yet.</p>}
         {[...byMonth].map(([month, list]) => (
           <section key={month}>

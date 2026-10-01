@@ -57,5 +57,5 @@ export function summariseSets(sets: SetLike[]) {
     if (last && last.text === text) last.count++;
     else groups.push({ text, count: 1 });
   }
-  return groups.map(({ text, count }) => (count > 1 ? `${text} ×${count}` : text));
+  return groups.map(({ text, count }) => (count > 1 ? `${text} × ${count}` : text));
 }
