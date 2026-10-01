@@ -56,7 +56,7 @@ async function* paginate<K extends string, T>(path: string, key: K, params: Reco
   let pageCount = 1;
   while (page <= pageCount) {
     const data = await hevy<Page<K, T>>(path, { ...params, page, pageSize: PAGE_SIZE });
-    yield* data[key];
+    yield* data[key] ?? [];
     pageCount = data.page_count;
     page++;
   }
