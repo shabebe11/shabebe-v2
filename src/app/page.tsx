@@ -1,17 +1,10 @@
 import { SectionButton } from "@/components/buttons/SectionButton";
 import PlatformScene from "@/components/PlatformSceneLazy";
+import { getBigThree } from "@/server/hevy/actions";
 
-const LIFTS: { name: string; kg: number | null }[] = [
-  { name: "squat", kg: null },
-  { name: "bench", kg: null },
-  { name: "deadlift", kg: null },
-];
+export default async function Home() {
+  const lifts = await getBigThree();
 
-const TOTAL = LIFTS.every((lift) => lift.kg !== null)
-  ? LIFTS.reduce((sum, lift) => sum + (lift.kg ?? 0), 0)
-  : null;
-
-export default function Home() {
   return (
     <>
     <PlatformScene />
@@ -25,7 +18,7 @@ export default function Home() {
         <p className="mt-6 text-lg text-muted">Part time coder, Full time lifter</p>
 
         <dl className="mt-12 grid max-w-lg grid-cols-2 gap-6 border-t border-line pt-6 sm:grid-cols-4">
-          {[...LIFTS, { name: "total", kg: TOTAL }].map((lift) => (
+          {(["squat", "bench", "deadlift", "total"] as const).map((name) => ({ name, kg: lifts[name] })).map((lift) => (
             <div key={lift.name}>
               <dt className="flex items-center gap-2 text-sm text-muted">
                 {lift.name}
