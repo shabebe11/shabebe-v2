@@ -1,4 +1,4 @@
-import { and, count, desc, eq, gte, inArray, max, ne, sql } from "drizzle-orm";
+import { and, count, desc, eq, gte, inArray, lte, max, ne, sql } from "drizzle-orm";
 import { db } from "@/db/client";
 import { sets, syncState, workouts } from "@/db/schema";
 
@@ -48,6 +48,7 @@ export async function getRecentWorkouts(limit: number) {
       title: workouts.title,
       startTime: workouts.startTime,
       endTime: workouts.endTime,
+      raw: workouts.raw,
       setCount: count(sets.setIndex),
       volumeKg: sql<number>`coalesce(sum(${sets.weightKg} * ${sets.reps}), 0)`.mapWith(Number),
     })
@@ -61,11 +62,30 @@ export async function getRecentWorkouts(limit: number) {
 export async function getTrainingDays(since: Date) {
   const day = sql<string>`to_char(${workouts.startTime} at time zone 'Pacific/Auckland', 'YYYY-MM-DD')`;
   return db
-    .select({ day, workouts: count() })
+    .select({
+      day,
+      workouts: sql<number>`count(distinct ${workouts.id})`.mapWith(Number),
+      sets: count(sets.setIndex),
+    })
     .from(workouts)
+    .leftJoin(sets, eq(sets.workoutId, workouts.id))
     .where(gte(workouts.startTime, since))
     .groupBy(day)
     .orderBy(day);
+}
+
+export async function getE1rmTrend(titles: string[]) {
+  const e1rm = sql<number>`case when ${sets.reps} = 1 then ${sets.weightKg} else ${sets.weightKg} * (1 + ${sets.reps}::float / 30) end`;
+  return db
+    .select({
+      title: sets.exerciseTitle,
+      startTime: sets.startTime,
+      e1rm: sql<number>`max(${e1rm})`.mapWith(Number),
+    })
+    .from(sets)
+    .where(and(inArray(sets.exerciseTitle, titles), workingSet, lte(sets.reps, 10)))
+    .groupBy(sets.exerciseTitle, sets.startTime)
+    .orderBy(sets.startTime);
 }
 
 export async function getLifetimeStats() {

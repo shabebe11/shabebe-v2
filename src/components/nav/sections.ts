@@ -31,8 +31,8 @@ export const SECTIONS: Section[] = [
     attempt: 3,
     ordinal: "3rd",
     nested: [
-      { href: "/trainingLog", text: "PRs" },
-      { href: "/trainingLog/history", text: "PR history" },
+      { href: "/trainingLog", text: "Latest" },
+      { href: "/trainingLog/history", text: "PRs" },
       { href: "/trainingLog/workouts", text: "Workouts" },
     ],
   },
