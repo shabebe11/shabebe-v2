@@ -19,6 +19,10 @@ const martianMono = Martian_Mono({
 export const metadata: Metadata = {
   title: "Shuaib Al Khudairi",
   description: "Shuaib Al Khudairi portfolio",
+  icons: {
+    icon: "/icon.jpg",
+    apple: "/icon.jpg",
+  },
 };
 
 export default function RootLayout({ children }: LayoutProps<"/">) {
