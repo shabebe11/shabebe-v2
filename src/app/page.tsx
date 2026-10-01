@@ -1,8 +1,18 @@
 import { SectionButton } from "@/components/buttons/SectionButton";
 import { getBigThree } from "@/server/hevy/actions";
 
+const COMPETITION = "2027-08-01";
+
+const todayFormat = new Intl.DateTimeFormat("en-CA", { timeZone: "Pacific/Auckland" });
+
+function daysUntil(date: string) {
+  const today = Date.parse(todayFormat.format(new Date()));
+  return Math.max(0, Math.round((Date.parse(date) - today) / 86_400_000));
+}
+
 export default async function Home() {
   const lifts = await getBigThree();
+  const daysLeft = daysUntil(COMPETITION);
 
   return (
     <main className="mx-auto grid w-full max-w-6xl flex-1 items-center gap-16 px-6 py-16 md:grid-cols-2 md:gap-12 md:px-12">
@@ -27,6 +37,14 @@ export default async function Home() {
             </div>
           ))}
         </dl>
+
+        <div className="mt-6 flex max-w-lg items-baseline justify-between border-t border-line pt-6">
+          <p className="text-sm text-muted">time till competition</p>
+          <p className="font-display text-4xl font-medium text-chalk">
+            {daysLeft}
+            <span className="ml-1 font-mono text-sm text-faint">{daysLeft === 1 ? "day" : "days"}</span>
+          </p>
+        </div>
       </section>
 
       <nav aria-label="Sections">
