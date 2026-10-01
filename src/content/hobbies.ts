@@ -5,7 +5,7 @@ export type Hobby = {
 };
 
 export const HOBBIES: Hobby[] = [
-  { name: "Gym", blurb: "Placeholder: powerlifting, what you're training for.", link: { label: "Training log", href: "/trainingLog" } },
-  { name: "Cars", blurb: "Placeholder: what you drive, or what you'd drive.", link: null },
-  { name: "Baking", blurb: "Placeholder: what you make most.", link: null },
+  { name: "Gym", blurb: "", link: { label: "Training log", href: "/trainingLog" } },
+  { name: "Basketball", blurb: "", link: null },
+  { name: "Baking", blurb: "", link: null },
 ];

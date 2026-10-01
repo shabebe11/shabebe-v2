@@ -14,6 +14,7 @@ export const SECTIONS: Section[] = [
     ordinal: "1st",
     nested: [
       { href: "/about", text: "Personal" },
+      { href: "/about/experience", text: "Experience" },
       { href: "/about/hobbies", text: "Hobbies" },
       { href: "/about/skills", text: "Skills" },
       { href: "/about/friends", text: "Friends" },
