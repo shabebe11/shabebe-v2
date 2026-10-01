@@ -1,6 +1,7 @@
 "use client";
 
 import Link from "next/link";
+import { NAV_HIGHLIGHT, NAV_NUDGE, NavPointer } from "@/components/nav/NavPointer";
 import { usePathname, useRouter } from "next/navigation";
 import {
   useEffect,
@@ -93,11 +94,12 @@ export function SectionButton({ href, text, attempt, ordinal, size = "large" }: 
       onKeyDown={moveNavFocus}
       data-nav-button
       aria-current={active ? "page" : undefined}
-      className={`group grid items-center outline-none ${s.row}`}
+      className={`group relative grid items-center outline-none ${NAV_HIGHLIGHT} ${s.row}`}
     >
+      <NavPointer />
       <span className="text-faint">{ordinal}</span>
       <span
-        className={`font-display font-medium transition-colors duration-150 group-hover:text-chalk group-focus-visible:text-chalk ${s.text} ${
+        className={`font-display font-medium group-hover:text-chalk group-focus-visible:text-chalk ${NAV_NUDGE} ${s.text} ${
           on ? "text-chalk" : "text-muted"
         }`}
       >

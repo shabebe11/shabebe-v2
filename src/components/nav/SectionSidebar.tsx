@@ -1,6 +1,7 @@
 "use client";
 
 import Link from "next/link";
+import { NAV_HIGHLIGHT, NAV_NUDGE, NavPointer } from "./NavPointer";
 import { usePathname } from "next/navigation";
 import { NestedButton } from "@/components/buttons/NestedButton";
 import { moveNavFocus, SectionButton } from "@/components/buttons/SectionButton";
@@ -17,12 +18,13 @@ export function SectionSidebar() {
             href="/"
             onKeyDown={moveNavFocus}
             data-nav-button
-            className="group grid grid-cols-[3.5rem_1fr] items-center py-4 outline-none"
+            className={`group relative grid grid-cols-[3.5rem_1fr] items-center py-4 outline-none ${NAV_HIGHLIGHT}`}
           >
+            <NavPointer />
             <span className="text-faint transition-colors duration-150 group-hover:text-chalk group-focus-visible:text-chalk">
               ←
             </span>
-            <span className="font-display text-3xl font-medium text-muted transition-colors duration-150 group-hover:text-chalk group-focus-visible:text-chalk">
+            <span className={`font-display text-3xl font-medium text-muted group-hover:text-chalk group-focus-visible:text-chalk ${NAV_NUDGE}`}>
               Home
             </span>
           </Link>

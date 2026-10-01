@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { Big_Shoulders, Martian_Mono } from "next/font/google";
+import { KeyboardNav } from "@/components/nav/KeyboardNav";
 import "./globals.css";
 
 const bigShoulders = Big_Shoulders({
@@ -26,7 +27,10 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
       lang="en"
       className={`${bigShoulders.variable} ${martianMono.variable} h-full antialiased`}
     >
-      <body className="min-h-full flex flex-col font-mono">{children}</body>
+      <body className="min-h-full flex flex-col font-mono">
+        {children}
+        <KeyboardNav />
+      </body>
     </html>
   );
 }
