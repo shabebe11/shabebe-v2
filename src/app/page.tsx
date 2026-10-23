@@ -1,5 +1,5 @@
 import { SectionButton } from "@/components/buttons/SectionButton";
-import { getBigThree } from "@/server/hevy/actions";
+import { getPrHistory } from "@/server/hevy/actions";
 
 const COMPETITION = "2027-08-01";
 
@@ -11,7 +11,16 @@ function daysUntil(date: string) {
 }
 
 export default async function Home() {
-  const lifts = await getBigThree();
+  const prs = await getPrHistory();
+  const best = (["squat", "bench", "deadlift"] as const).map((lift) =>
+    prs.filter((pr) => pr.lift === lift).reduce<number | null>((top, pr) => Math.max(top ?? 0, pr.weightKg), null),
+  );
+  const lifts = {
+    squat: best[0],
+    bench: best[1],
+    deadlift: best[2],
+    total: best.every((kg) => kg !== null) ? best.reduce<number>((sum, kg) => sum + kg!, 0) : null,
+  };
   const daysLeft = daysUntil(COMPETITION);
 
   return (

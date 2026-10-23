@@ -1,4 +1,4 @@
-import { and, count, desc, eq, gte, inArray, lte, max, ne, sql } from "drizzle-orm";
+import { and, count, desc, eq, gte, inArray, lte, ne, sql } from "drizzle-orm";
 import { db } from "@/db/client";
 import { sets, syncState, workouts } from "@/db/schema";
 
@@ -7,14 +7,6 @@ const workingSet = and(ne(sets.setType, "warmup"), gte(sets.reps, 1));
 export async function getSyncState(key: string) {
   const [row] = await db.select({ value: syncState.value }).from(syncState).where(eq(syncState.key, key));
   return row?.value ?? null;
-}
-
-export async function getBestLifts(titles: string[]) {
-  return db
-    .select({ title: sets.exerciseTitle, kg: max(sets.weightKg) })
-    .from(sets)
-    .where(and(inArray(sets.exerciseTitle, titles), workingSet))
-    .groupBy(sets.exerciseTitle);
 }
 
 export async function getPrTimeline(titles: string[]) {
@@ -35,10 +27,15 @@ export async function getPrTimeline(titles: string[]) {
     .as("ranked");
 
   return db
-    .select({ title: ranked.title, startTime: ranked.startTime, weightKg: ranked.weightKg, reps: ranked.reps })
+    .selectDistinctOn([ranked.title, ranked.startTime], {
+      title: ranked.title,
+      startTime: ranked.startTime,
+      weightKg: ranked.weightKg,
+      reps: ranked.reps,
+    })
     .from(ranked)
     .where(sql`${ranked.weightKg} > coalesce(${ranked.previousBest}, 0)`)
-    .orderBy(ranked.title, ranked.startTime);
+    .orderBy(ranked.title, ranked.startTime, desc(ranked.weightKg));
 }
 
 export async function getRecentWorkouts(limit: number) {

@@ -1,13 +1,11 @@
 "use client";
 
 import { useState } from "react";
-import type { Pr } from "@/content/prs";
 import { kg, LIFT_LABEL, LIFT_ORDER, LIFT_STRIP, shortDate } from "./format";
 
-type Row = Pr & { gain: number | null };
-type Filter = "all" | Pr["lift"];
-
-const toIso = (date: string) => `${date}T12:00:00+12:00`;
+type Lift = (typeof LIFT_ORDER)[number];
+type Row = { lift: Lift; date: string; weightKg: number; reps: number; gain: number | null };
+type Filter = "all" | Lift;
 
 export function PrTable({ rows }: { rows: Row[] }) {
   const [filter, setFilter] = useState<Filter>("all");
@@ -50,23 +48,21 @@ export function PrTable({ rows }: { rows: Row[] }) {
               <th className="py-2 text-right font-normal">Weight</th>
               <th className="py-2 text-right font-normal">Reps</th>
               <th className="py-2 text-right font-normal">Gain</th>
-              <th className="hidden py-2 pl-6 font-normal md:table-cell">Note</th>
             </tr>
           </thead>
           <tbody className="tabular-nums">
             {visible.map((pr) => (
-              <tr key={`${pr.lift}${pr.date}${pr.kg}${pr.reps}`} className="border-b border-line">
-                <td className="py-3 text-faint">{shortDate(toIso(pr.date))}</td>
+              <tr key={`${pr.lift}${pr.date}`} className="border-b border-line">
+                <td className="py-3 text-faint">{shortDate(pr.date)}</td>
                 <td className="py-3">
                   <span className="flex items-center gap-2 text-muted">
                     <span aria-hidden className={`size-2 ${LIFT_STRIP[pr.lift]}`} />
                     {LIFT_LABEL[pr.lift]}
                   </span>
                 </td>
-                <td className="py-3 text-right text-chalk">{kg(pr.kg)} kg</td>
+                <td className="py-3 text-right text-chalk">{kg(pr.weightKg)} kg</td>
                 <td className="py-3 text-right text-muted">{pr.reps}</td>
                 <td className="py-3 text-right text-muted">{pr.gain === null ? "first" : `+${kg(pr.gain)} kg`}</td>
-                <td className="hidden py-3 pl-6 text-xs text-faint md:table-cell">{pr.note ?? ""}</td>
               </tr>
             ))}
           </tbody>

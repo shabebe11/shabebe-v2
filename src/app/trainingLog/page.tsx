@@ -10,8 +10,7 @@ import {
   summariseSets,
   volume,
 } from "@/components/training/format";
-import { PRS } from "@/content/prs";
-import { getLastSyncedAt, getTrainingTotals, getWorkoutHistory } from "@/server/hevy/actions";
+import { getLastSyncedAt, getPrHistory, getTrainingTotals, getWorkoutHistory } from "@/server/hevy/actions";
 
 export const revalidate = 3600;
 
@@ -28,15 +27,12 @@ function currentWeek() {
   });
 }
 
-function bestFor(lift: (typeof LIFT_ORDER)[number]) {
-  return PRS.filter((pr) => pr.lift === lift).sort((a, b) => b.kg - a.kg || a.reps - b.reps)[0] ?? null;
-}
-
 export default async function LatestPage() {
-  const [sessions, totals, syncedAt] = await Promise.all([
+  const [sessions, totals, syncedAt, prs] = await Promise.all([
     getWorkoutHistory(500),
     getTrainingTotals(),
     getLastSyncedAt(),
+    getPrHistory(),
   ]);
   const [last, ...earlier] = sessions;
 
@@ -46,8 +42,11 @@ export default async function LatestPage() {
   const weekSets = thisWeek.reduce((sum, s) => sum + s.setCount, 0);
   const weekVolume = thisWeek.reduce((sum, s) => sum + s.volumeKg, 0);
 
-  const bests = LIFT_ORDER.map((lift) => ({ lift, pr: bestFor(lift) }));
-  const total = bests.every((b) => b.pr) ? bests.reduce((sum, b) => sum + b.pr!.kg, 0) : null;
+  const bests = LIFT_ORDER.map((lift) => ({
+    lift,
+    pr: prs.filter((pr) => pr.lift === lift).sort((a, b) => b.weightKg - a.weightKg)[0] ?? null,
+  }));
+  const total = bests.every((b) => b.pr) ? bests.reduce((sum, b) => sum + b.pr!.weightKg, 0) : null;
 
   return (
     <>
@@ -134,7 +133,7 @@ export default async function LatestPage() {
                 <div key={lift} className="grid grid-cols-[1fr_auto] items-baseline gap-x-4 border-b border-line py-2">
                   <dt className="text-sm text-muted">{LIFT_LABEL[lift]}</dt>
                   <dd className="font-display text-2xl font-medium text-chalk">
-                    {pr ? kg(pr.kg) : "—"}
+                    {pr ? kg(pr.weightKg) : "—"}
                     {pr && (
                       <span className="ml-1 font-mono text-xs text-faint">
                         kg{pr.reps > 1 ? ` × ${pr.reps}` : ""}
@@ -142,7 +141,7 @@ export default async function LatestPage() {
                     )}
                   </dd>
                   {pr && (
-                    <dd className="col-start-1 text-[11px] text-faint">{shortDate(`${pr.date}T12:00:00+12:00`)}</dd>
+                    <dd className="col-start-1 text-[11px] text-faint">{shortDate(pr.date)}</dd>
                   )}
                 </div>
               ))}
